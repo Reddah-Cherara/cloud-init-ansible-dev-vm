@@ -8,16 +8,16 @@
       apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-xenial main' state=present
       
     - name: "Download intellij IDE"
-      get_url: url=https://download.jetbrains.com/idea/ideaIC-2016.1.2.tar.gz dest=/tmp/ideaIC-2016.1.2.tar.gz
+      get_url: url=https://download.jetbrains.com/idea/ideaIU-2018.2.5.tar.gz dest=/tmp/ideaIU-2018.2.5.tar.gz
 
     - name: "Extract Indellij IDE"
-      unarchive: src=/tmp/ideaIC-2016.1.2.tar.gz dest=/opt/
+      unarchive: src=/tmp/ideaIU-2018.2.5.tar.gz dest=/opt/
       
     - name: "Download Scala"
-      get_url: url=http://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.tgz dest=/tmp/scala-2.11.8.tgz
+      get_url: url=https://downloads.lightbend.com/scala/2.12.7/scala-2.12.7.tgz dest=/tmp/scala-2.12.7.tgz
 
     - name: "Extract Scala"
-      unarchive: src=/tmp/scala-2.11.8.tgz dest=/opt/
+      unarchive: src=/tmp/scala-2.12.7.tgz dest=/opt/
 
     - name: "Ensure {{item}} is installed"
       apt: name={{item}} state=present
