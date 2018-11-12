@@ -1,0 +1,40 @@
+---
+- hosts: localhost
+  tasks:
+    - name: "Add apt key server for docker repo"
+      apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id=58118E89F3A912897C070ADBF76221572C52609D
+    
+    - name: "Add Docker repository"
+      apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-xenial main' state=present
+      
+    - name: "Download intellij IDE"
+      get_url: url=https://download.jetbrains.com/idea/ideaIC-2016.1.2.tar.gz dest=/tmp/ideaIC-2016.1.2.tar.gz
+
+    - name: "Extract Indellij IDE"
+      unarchive: src=/tmp/ideaIC-2016.1.2.tar.gz dest=/opt/
+      
+    - name: "Download Scala"
+      get_url: url=http://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.tgz dest=/tmp/scala-2.11.8.tgz
+
+    - name: "Extract Scala"
+      unarchive: src=/tmp/scala-2.11.8.tgz dest=/opt/
+
+    - name: "Ensure {{item}} is installed"
+      apt: name={{item}} state=present
+      with_items:
+        - default-jdk
+        - apt-transport-https
+        - ca-certificates
+        - docker-engine
+      
+    - name: "Disable cloud-init"
+      apt: name=cloud-init state=absent
+      
+    - name: "Add cfs user to docker group"
+      user: name=cfs groups=docker append=yes
+      
+    - name: "Add JAVA_HOME as system wide env. variable"
+      lineinfile: dest=/etc/environment line='JAVA_HOME=/usr/lib/java/java-8-openjdk-amd64' state=present
+      
+    - name: "Shutdown machine"
+      command: shutdown now
