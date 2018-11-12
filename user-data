@@ -1,0 +1,11 @@
+#cloud-config
+manage_etc_hosts: true
+apt_sources:
+  - source: "ppa:ansible/ansible"
+
+packages:
+  - ansible
+
+runcmd:
+  - 'git clone https://github.com/Reddah-Cherara/cloud-init-ansible-dev-vm/blob/master/playbooks/dev-vm-rcherara.yml'
+  - 'ansible-playbook -vvvv /playbooks/dev-vm-rcherara.yml >>/tmp/ansible-output.txt 2>&1'
